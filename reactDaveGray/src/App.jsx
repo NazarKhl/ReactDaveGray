@@ -1,12 +1,13 @@
-import React from 'react'
-import Content from './Content'
-
+import React from "react";
+import Content from "./Content";
+import Header from "./Header";
+import Footer from "./Footer";
 export default function App() {
-
   return (
     <>
-    <Content/>
+      <Content />
+      <Footer />
+      <Header />
     </>
-  )
+  );
 }
-
