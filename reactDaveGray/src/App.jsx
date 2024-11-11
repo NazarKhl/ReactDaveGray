@@ -7,15 +7,29 @@ import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
 
 export default function App() {
+  const API_URL = "http://localhost:3500/items";
+
   const [newItem, setNewItem] = useState("");
   const [search, setSearch] = useState("");
-  const [items, setItems] = useState(
-    JSON.parse(localStorage.getItem("Shopping list")) || []
-  );
+  const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    localStorage.setItem("Shopping list", JSON.stringify(items));
-  }, [items]);
+    const fetchItmess = async () => {
+      try {
+        const response = await fetch(API_URL);
+        const listItems = await response.json();
+        setItems(listItems);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    setTimeout(() => {
+      (async () => await fetchItmess())();
+    }, 2000);
+  }, []);
 
   const addItem = (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
@@ -53,13 +67,16 @@ export default function App() {
         handleSubmit={handleSubmit}
       />
       <SearchItem search={search} setSearch={setSearch} />
-      <Content
-        items={items.filter((item) =>
-          item.item.toLowerCase().includes(search.toLowerCase())
-        )}
-        handleCheck={handleCheck}
-        handleDelete={handleDelete}
-      />
+      <main>
+        {isLoading && <p>Loading... Please wait!</p>}
+        <Content
+          items={items.filter((item) =>
+            item.item.toLowerCase().includes(search.toLowerCase())
+          )}
+          handleCheck={handleCheck}
+          handleDelete={handleDelete}
+        />
+      </main>
       <Footer length={items.length} />
     </>
   );
