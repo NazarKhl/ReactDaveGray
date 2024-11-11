@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import { useState, useEffect } from "react";
 import AddItem from "./AddItem";
 import SearchItem from "./SearchItem";
+import apiRequest from "./apiRequest";
 
 export default function App() {
   const API_URL = "http://localhost:3500/items";
@@ -28,21 +29,37 @@ export default function App() {
     };
     setTimeout(() => {
       (async () => await fetchItmess())();
-    }, 2000);
+    }, 500);
   }, []);
 
-  const addItem = (item) => {
+  const addItem = async (item) => {
     const id = items.length ? items[items.length - 1].id + 1 : 1;
     const myNewItem = { id, checked: false, item };
     const listItems = [...items, myNewItem];
     setItems(listItems);
+
+    const postOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application-json",
+      },
+      body: JSON.stringify(myNewItem),
+    };
+    const result = await apiRequest(API_URL, postOptions);
   };
 
-  const handleCheck = (id) => {
-    const listItems = items.map((item) =>
-      item.id === id ? { ...item, checked: !item.checked } : item
-    );
-    setItems(listItems);
+  const handleCheck = async (id) => {
+    const myItem = listItems.filter((item) => item.id === id);
+    const updateOptions = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application-json",
+      },
+      body: JSON.stringify({ checked: myItem[0] }),
+    };
+    const reqURL = `${API_URL}/${id}`;
+    const result = await apiRequest(reqURL, updateOptions);
+    setItems(myItem);
   };
 
   const handleDelete = (id) => {
