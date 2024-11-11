@@ -1,12 +1,9 @@
-export default function Header({titles}){
-    return (
-        <>
-            <div>
-                <h1>{titles}</h1>
-            </div>
-        </>
-    );
+import React from 'react'
+
+const Header = () => {
+  return (
+    <div>Header</div>
+  )
 }
-Header.defaultProps = {
-    titles: "Default Title"
-}
+
+export default Header
