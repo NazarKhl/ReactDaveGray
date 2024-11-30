@@ -35,9 +35,9 @@ const main = async () => {
     console.log("Welcome to the Task Calculator!");
 
     const manager = new TaskManager();
-    manager.addTask(new Task("Write TypeScript code", 1)); // 1 хвилина
-    manager.addTask(new Task("Debug application", 2)); // 2 хвилини
-    manager.addTask(new Task("Push code to GitHub", 1)); // 1 хвилина
+    manager.addTask(new Task("Write TypeScript code", 1)); 
+    manager.addTask(new Task("Debug application", 2)); 
+    manager.addTask(new Task("Push code to GitHub", 1)); 
 
     console.log("\nTasks:");
     manager.printTasks();
